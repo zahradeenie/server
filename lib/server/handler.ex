@@ -7,7 +7,7 @@ defmodule Server.Handler do
   end
 
   def parse(request) do
-    [method, path, _, _] =
+    [method, path, _] =
       request
       |> String.split("\n")
       |> List.first
@@ -33,7 +33,7 @@ defmodule Server.Handler do
 end
 
 request = """
-GET /wildthings HTTP/1.1 
+GET /wildthings HTTP/1.1
 Host: example.com
 User-Agent: ExampleBrowser/1.0
 Accept: */*
