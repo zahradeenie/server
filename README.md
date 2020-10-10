@@ -21,6 +21,26 @@ some useful info to know about maps:
 
 There's a nice way of updating a map's value if the key already exists: `map = %{ key: 'hello', key_2: 'world' }` --> `Map.put(map | key_2: 'zahra')` = `%{ key: 'hello', key_2: 'zahra' }`. Nifty!
 
+**Atoms**
+An atom is a name whose value is the same as its name. -- doesn't sound right.. double check this
+
+### Pattern Matching
+A great feature of Elixir is pattern matching and it's exactly what it sounds like. You don't really use if/else statements in Elixir, you use pattern matching. This matches the request/arguments of a function and runs the function if there's a match. Because of this, you need to have a default 'catch all' function to return something in the case of no matches. To pattern match, you need to write as many functions as you need with the same name and arity - these are called 'function clauses'.
+
+An important thing to note is that Elixir pattern matches from top to bottom so your default clause needs to be at the bottom of the other clauses. Part of Elixir's no-bullshit approach to formatting, you're required to group together all function clauses. If you don't you'll get a nice warning from the compiler that you made an oopsie. Love it.
+
+
+### Handy commands
+
+
+Starting an iex session in the context of the app. The application is compiled when you run this: `iex -S mix`
+To compile a module within an iex session: `-c PATH`
+To compile a module from the command line: `elxiir PATH`
+
+### Good to know
+
+Elixir strings are binary. same length may have different bites because of special characters. learn more on this.
+
 
 ## Installation
 
