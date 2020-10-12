@@ -1,4 +1,10 @@
 defmodule Server.Handler do
+
+  @pages_path Path.expand("../..pages", __DIR__)
+
+  import Server.Plugins, only: [rewrite_path: 1, track: 1]
+  import Server.Parser, only: [parse: 1]
+
   def handle(request) do
     request
     |> parse
@@ -19,38 +25,6 @@ defmodule Server.Handler do
 
   def emojify(conv), do: conv
 
-  def track(%{status: 404, path: path} = conv) do
-    IO.puts("Warning #{path} is not found")
-    conv
-  end
-
-  def track(conv), do: conv
-
-  def rewrite_path(%{path: "wildlife"} = conv) do
-    %{conv | path: "/wildthings"}
-  end
-
-  def rewrite_path(%{path: "/bears?id=" <> id} = conv) do
-    %{conv | path: "/bears/#{id}"}
-  end
-
-  def rewrite_path(conv), do: conv
-
-  def parse(request) do
-    [method, path, _] =
-      request
-      |> String.split("\n")
-      |> List.first()
-      |> String.split(" ")
-
-    %{
-      method: method,
-      path: path,
-      resp_body: "",
-      status: nil
-    }
-  end
-
   def route(%{method: "GET", path: "/wildthings"} = conv) do
     %{conv | resp_body: "Bears, Lions, Tigers", status: 200}
   end
@@ -68,7 +42,7 @@ defmodule Server.Handler do
   end
 
   def route(%{method: "GET", path: "/about"} = conv) do
-    Path.expand("../..pages", __DIR__)
+    @pages_path
     |> Path.join("about.html") 
     |> File.read
     |> handle_file(conv)
@@ -81,11 +55,15 @@ defmodule Server.Handler do
     |> handle_file(conv)
   end
 
-  def route(%{method: "GET", path: "/pages/" <> page} = conv) do
+  def route(%{method: "GET", path: "/pages/" <> file} = conv) do
     Path.expand("../..pages", __DIR__)
     |> Path.join(file <> "html") 
     |> File.read
     |> handle_file(conv)
+  end
+
+  def route(%{path: path} = conv) do
+    %{conv | resp_body: "No #{path} here", status: 404}
   end
 
   def handle_file({:ok, content}, conv) do
@@ -98,10 +76,6 @@ defmodule Server.Handler do
 
   def handle_file({:error, reason}, conv) do
     %{conv | resp_body: "File error #{reason}", status: 500}
-  end
-
-  def route(%{path: path} = conv) do
-    %{conv | resp_body: "No #{path} here", status: 404}
   end
 
   def format_response(conv) do
