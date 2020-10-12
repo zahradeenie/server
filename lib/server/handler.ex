@@ -74,6 +74,20 @@ defmodule Server.Handler do
     |> handle_file(conv)
   end
 
+  def route(%{method: "GET", path: "/bears/new"} = conv) do
+    Path.expand("../..pages", __DIR__)
+    |> Path.join("form.html") 
+    |> File.read
+    |> handle_file(conv)
+  end
+
+  def route(%{method: "GET", path: "/pages/" <> page} = conv) do
+    Path.expand("../..pages", __DIR__)
+    |> Path.join(file <> "html") 
+    |> File.read
+    |> handle_file(conv)
+  end
+
   def handle_file({:ok, content}, conv) do
     %{conv | resp_body: content, status: 200}
   end
@@ -136,6 +150,17 @@ IO.puts(response)
 
 request = """
 GET /bears HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
+
+"""
+
+response = Server.Handler.handle(request)
+IO.puts(response)
+
+request = """
+GET /bears/new HTTP/1.1
 Host: example.com
 User-Agent: ExampleBrowser/1.0
 Accept: */*
