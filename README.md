@@ -29,6 +29,19 @@ A great feature of Elixir is pattern matching and it's exactly what it sounds li
 
 An important thing to note is that Elixir pattern matches from top to bottom so your default clause needs to be at the bottom of the other clauses. Part of Elixir's no-bullshit approach to formatting, you're required to group together all function clauses. If you don't you'll get a nice warning from the compiler that you made an oopsie. Love it.
 
+**Pattern matching on maps**
+If you're passing a map into a function and you only really want to use a specific value, you can pattern match the key/value into the function's argument. This is useful if you want to do something specific when the value is _x_ vs _y_.
+```elixir
+def do_something(%{key: "value"}) do
+  # something happens here
+end
+```
+If you don't care what the value is, you can add a variable name to the value and use it in the function block.
+```elixir
+def do_something(%{key: key}) do
+  # something happens here with key
+end
+```
 
 ### Handy commands
 
