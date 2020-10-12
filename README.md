@@ -54,6 +54,8 @@ To compile a module from the command line: `elxiir PATH`
 
 Elixir strings are binary. same length may have different bites because of special characters. learn more on this.
 
+Module constants can be used to hold data that can be used by any function within a module. It's defined at the top of the module and has the following syntax: `@constant_name [x, y]`
+
 
 ## Installation
 
