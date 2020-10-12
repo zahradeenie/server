@@ -51,10 +51,6 @@ defmodule Server.Handler do
     }
   end
 
-  # def route(conv) do
-  #   route(conv, conv.method, conv.path)
-  # end
-
   def route(%{method: "GET", path: "/wildthings"} = conv) do
     %{conv | resp_body: "Bears, Lions, Tigers", status: 200}
   end
@@ -69,6 +65,25 @@ defmodule Server.Handler do
 
   def route(%{method: "DELETE", path: "/bears/" <> id} = conv) do
     %{conv | resp_body: "Deleting Bear #{id} is forbidden", status: 403}
+  end
+
+  def route(%{method: "GET", path: "/about"} = conv) do
+    Path.expand("../..pages", __DIR__)
+    |> Path.join("about.html") 
+    |> File.read
+    |> handle_file(conv)
+  end
+
+  def handle_file({:ok, content}, conv) do
+    %{conv | resp_body: content, status: 200}
+  end
+
+  def handle_file({:error, :enoent}, conv) do
+    %{conv | resp_body: "File not found", status: 404}
+  end
+
+  def handle_file({:error, reason}, conv) do
+    %{conv | resp_body: "File error #{reason}", status: 500}
   end
 
   def route(%{path: path} = conv) do
