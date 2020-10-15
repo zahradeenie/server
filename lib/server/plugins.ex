@@ -1,5 +1,4 @@
 defmodule Server.Plugins do
-
   alias Server.Conv
 
   def track(%Conv{status: 404, path: path} = conv) do

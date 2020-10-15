@@ -38,6 +38,11 @@ defmodule Server.Handler do
     %{conv | resp_body: "Bear #{id}", status: 200}
   end
 
+  ##
+  def route(%Conv{method: "POST", path: "/bears"} = conv) do
+    %{conv | resp_body: "Create a #{conv.params["type"]} bear named #{conv.params["name"]}", status: 201}
+  end
+
   def route(%Conv{method: "DELETE", path: "/bears/" <> id} = conv) do
     %{conv | resp_body: "Deleting Bear #{id} is forbidden", status: 403}
   end
@@ -140,6 +145,20 @@ Host: example.com
 User-Agent: ExampleBrowser/1.0
 Accept: */*
 
+"""
+
+response = Server.Handler.handle(request)
+IO.puts(response)
+
+request = """
+POST /bears HTTP/1.1
+Host: example.com
+User-Agent: ExampleBrowser/1.0
+Accept: */*
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 21
+
+name=Baloo&type=Brown
 """
 
 response = Server.Handler.handle(request)
