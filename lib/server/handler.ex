@@ -32,7 +32,7 @@ defmodule Server.Handler do
   end
 
   def route(%Conv{method: "GET", path: "/bears"} = conv) do
-    Server.BearController.index(conv)
+    BearController.index(conv)
   end
 
   def route(%Conv{method: "GET", path: "/bears/" <> id} = conv) do
@@ -45,19 +45,13 @@ defmodule Server.Handler do
   end
 
   def route(%Conv{method: "DELETE", path: "/bears/" <> id} = conv) do
-    %{conv | resp_body: "Deleting Bear #{id} is forbidden", status: 403}
+    params = Map.put(conv.params, "id", id)
+    BearController.delete(conv, params)
   end
 
   def route(%Conv{method: "GET", path: "/about"} = conv) do
     @pages_path
     |> Path.join("about.html")
-    |> File.read()
-    |> handle_file(conv)
-  end
-
-  def route(%Conv{method: "GET", path: "/bears/new"} = conv) do
-    Path.expand("../..pages", __DIR__)
-    |> Path.join("form.html")
     |> File.read()
     |> handle_file(conv)
   end
@@ -120,17 +114,6 @@ IO.puts(response)
 
 request = """
 GET /bears HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
-
-"""
-
-response = Server.Handler.handle(request)
-IO.puts(response)
-
-request = """
-GET /bears/new HTTP/1.1
 Host: example.com
 User-Agent: ExampleBrowser/1.0
 Accept: */*
