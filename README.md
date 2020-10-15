@@ -24,6 +24,13 @@ There's a nice way of updating a map's value if the key already exists: `map = %
 **Atoms**
 An atom is a name whose value is the same as its name. -- doesn't sound right.. double check this
 
+**Keyword Lists and Structs**
+Keyword lists are basically a list of tuples containing your usual key value pairs of an atom and a value: `[{:key, ""}, {:key2, ""}, {:key3, ""}]`
+
+These are usually used to define structs which is used to store default data. A struct is an extension of a map so you can update a struct's values the same way you would a map but the main difference is you can only update the values existing in the struct, you cannot add a value willy nilly.
+
+Oh, also important and handy is knowing that Lists are recursive data structures... more on that later.
+
 ### Pattern Matching
 A great feature of Elixir is pattern matching and it's exactly what it sounds like. You don't really use if/else statements in Elixir, you use pattern matching. This matches the request/arguments of a function and runs the function if there's a match. Because of this, you need to have a default 'catch all' function to return something in the case of no matches. To pattern match, you need to write as many functions as you need with the same name and arity - these are called 'function clauses'.
 
@@ -43,11 +50,25 @@ def do_something(%{key: key}) do
 end
 ```
 
-### Handy commands
+**Pattern matching on lists**
+Another nifty gifty from elixir is the ability to pattern match on lists. I've played around with the head tail matching before and I love it. What it does is bind the first value of a list to the head variable and binds the remaining list to the tail value:
+```elixir
+[head | tail] = [1, 2, 3]
+// head = 1, tail = [2, 3]
+```
+but you can also use this syntax to prepend a value to a list:
+```elixir
+nums = [1, 2, 3]
+[0 | nums]
+// [0, 1, 2, 3]
+```
+This syntax can be called recursively until the is no tail and an empty list is returned. I learned quickly that it's very dangerous to use recursion in JavaScript but it's very very efficient to do this in Elixir because it uses `tail call optimisation` which means no new frames are called onto the call stack
 
+### Handy commands
 
 Starting an iex session in the context of the app. The application is compiled when you run this: `iex -S mix`
 To compile a module within an iex session: `-c PATH`
+To recompile the whole application in an iex session: `recompile()`
 To compile a module from the command line: `elxiir PATH`
 
 ### Good to know
