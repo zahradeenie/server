@@ -2,6 +2,7 @@ defmodule Server.Handler do
   @pages_path Path.expand("../..pages", __DIR__)
 
   alias Server.Conv
+  alias Server.BearController
 
   import Server.Plugins, only: [rewrite_path: 1, track: 1]
   import Server.Parser, only: [parse: 1]
@@ -31,16 +32,16 @@ defmodule Server.Handler do
   end
 
   def route(%Conv{method: "GET", path: "/bears"} = conv) do
-    %{conv | resp_body: "Teddy, Smokey, Paddington", status: 200}
+    Server.BearController.index(conv)
   end
 
   def route(%Conv{method: "GET", path: "/bears/" <> id} = conv) do
-    %{conv | resp_body: "Bear #{id}", status: 200}
+    params = Map.put(conv.params, "id", id)
+    BearController.show(conv, params)
   end
 
-  ##
   def route(%Conv{method: "POST", path: "/bears"} = conv) do
-    %{conv | resp_body: "Create a #{conv.params["type"]} bear named #{conv.params["name"]}", status: 201}
+    BearController.create(conv, conv.params)
   end
 
   def route(%Conv{method: "DELETE", path: "/bears/" <> id} = conv) do
