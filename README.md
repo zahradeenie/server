@@ -62,7 +62,7 @@ nums = [1, 2, 3]
 [0 | nums]
 // [0, 1, 2, 3]
 ```
-This syntax can be called recursively until the is no tail and an empty list is returned. I learned quickly that it's very dangerous to use recursion in JavaScript but it's very very efficient to do this in Elixir because it uses `tail call optimisation` which means no new frames are called onto the call stack
+This syntax can be called recursively until the is no tail and an empty list is returned. I learned quickly that it's very dangerous to use recursion in JavaScript but it's very very efficient to do this in Elixir because it uses `tail call optimisation` which means no new frames are called onto the call stack. But recursion is not really used this way IRL in Elixir, you'd generally use functions available in the Enum module for traversing and manipulating lists.
 
 ### Handy commands
 
