@@ -5,14 +5,16 @@ I've created a http server before in Elixir but that was actually using the Phoe
 ## Intro to Elixir
 
 ### Data
+
 All data structures in Elixir are 100% immutable. There's no `object.new_property = value` or reassigning values in one place but also in another place like JavaScript. Instead, what you need to do is take the data and transform it to what you want and even then, you're never mutating the original data - you're given a new structure with the transformed data. This has been the most challenging for me so far. It's difficult to stop thinking of the `=` as assignment when that's all you do with it in JS.
 
 The types of data structures
 - Maps
 - Keyword Lists
-- Nested data strucutres
+- Lists
 
 **Maps**
+
 Maps are weird looking things in Elixir: `map = %{ :key => value }`. That's one way of declaring a map but you can also use atoms as keys for a map - `map = %{ key: value }` which gives you a nice way of accessing the atom values from the map: `map.key` instead of `map[:key]`. Using atoms as keys also means that when you try to access a key that doesn't exist, you'll get a nice error message instead of `nil`
 
 some useful info to know about maps:
@@ -22,9 +24,11 @@ some useful info to know about maps:
 There's a nice way of updating a map's value if the key already exists: `map = %{ key: 'hello', key_2: 'world' }` --> `Map.put(map | key_2: 'zahra')` = `%{ key: 'hello', key_2: 'zahra' }`. Nifty!
 
 **Atoms**
+
 An atom is a name whose value is the same as its name. -- doesn't sound right.. double check this
 
 **Keyword Lists and Structs**
+
 Keyword lists are basically a list of tuples containing your usual key value pairs of an atom and a value: `[{:key, ""}, {:key2, ""}, {:key3, ""}]`
 
 These are usually used to define structs which is used to store default data. A struct is an extension of a map so you can update a struct's values the same way you would a map but the main difference is you can only update the values existing in the struct, you cannot add a value willy nilly.
@@ -32,11 +36,13 @@ These are usually used to define structs which is used to store default data. A 
 Oh, also important and handy is knowing that Lists are recursive data structures... more on that later.
 
 ### Pattern Matching
+
 A great feature of Elixir is pattern matching and it's exactly what it sounds like. You don't really use if/else statements in Elixir, you use pattern matching. This matches the request/arguments of a function and runs the function if there's a match. Because of this, you need to have a default 'catch all' function to return something in the case of no matches. To pattern match, you need to write as many functions as you need with the same name and arity - these are called 'function clauses'.
 
 An important thing to note is that Elixir pattern matches from top to bottom so your default clause needs to be at the bottom of the other clauses. Part of Elixir's no-bullshit approach to formatting, you're required to group together all function clauses. If you don't you'll get a nice warning from the compiler that you made an oopsie. Love it.
 
 **Pattern matching on maps**
+
 If you're passing a map into a function and you only really want to use a specific value, you can pattern match the key/value into the function's argument. This is useful if you want to do something specific when the value is _x_ vs _y_.
 ```elixir
 def do_something(%{key: "value"}) do
@@ -51,6 +57,7 @@ end
 ```
 
 **Pattern matching on lists**
+
 Another nifty gifty from elixir is the ability to pattern match on lists. I've played around with the head tail matching before and I love it. What it does is bind the first value of a list to the head variable and binds the remaining list to the tail value:
 ```elixir
 [head | tail] = [1, 2, 3]
