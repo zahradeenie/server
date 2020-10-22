@@ -10,8 +10,8 @@ All data structures in Elixir are 100% immutable. There's no `object.new_propert
 
 The types of data structures
 - Maps
-- Keyword Lists
 - Lists
+- Keyword Lists
 
 **Maps**
 
@@ -84,6 +84,9 @@ Elixir strings are binary. same length may have different bites because of speci
 
 Module constants can be used to hold data that can be used by any function within a module. It's defined at the top of the module and has the following syntax: `@constant_name [x, y]`
 
+The file extension `.eex` stands for embedded elixir. The EEx module allows you to read .eex files and dynamically fill in the values. To use dynamic values in .eex templates you use the following syntax: `<%= data %>`
+
+A comprehension is a shorthand expression for looping over enumberables. Commonly used in .eex templates.
 
 ## Installation
 
