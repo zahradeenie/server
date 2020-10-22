@@ -1,21 +1,30 @@
 defmodule Server.BearController do
 
   alias Server.Wildthings
+
+  @templates_path Path.expand("../../templates", __DIR__)
   
   def index(conv) do
-    items =
+    bears =
       Wildthings.list_bears()
-      |> Enum.filter(fn(bear) -> bear.type == "Grizzly" end)
       |> Enum.sort(fn(b1, b2) -> b1.name <= b2.name end)
-      |> Enum.map(fn(bear) -> "<li>#{bear.name} - #{bear.type}</li>" end)
-      |> Enum.join
 
-    %{conv | resp_body: "<ul>#{items}</ul>", status: 200}
+    render(conv, "index.eex", bears: bears)
   end
 
   def show(conv, %{"id" => id}) do
     bear = Wildthings.get_bear(id)
-    %{conv | resp_body: "<h1>Bear #{bear.id} - #{bear.name}</h1>", status: 200}
+
+    render(conv, "show.eex", bear: bear)
+  end
+
+  defp render(conv, template, bindings \\ []) do
+    content =
+    @templates_path 
+    |> Path.join(template)
+    |> EEx.eval_file(bindings)
+
+    %{conv | resp_body: content, status: 200}
   end
 
   def create(conv, %{"name" => name, "type" => type}) do
