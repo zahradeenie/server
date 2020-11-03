@@ -25,7 +25,7 @@ There's a nice way of updating a map's value if the key already exists: `map = %
 
 **Atoms**
 
-An atom is a name whose value is the same as its name. -- doesn't sound right.. double check this
+An atom is a constant whose value is the same as its name.
 
 **Keyword Lists and Structs**
 
