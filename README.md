@@ -74,8 +74,11 @@ This syntax can be called recursively until the is no tail and an empty list is 
 ### Handy commands
 
 Starting an iex session in the context of the app. The application is compiled when you run this: `iex -S mix`
+
 To compile a module within an iex session: `-c PATH`
+
 To recompile the whole application in an iex session: `recompile()`
+
 To compile a module from the command line: `elxiir PATH`
 
 ### Good to know
